@@ -74,7 +74,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   pp_manifest_path = "puppet/manifests"
   pp_module_path = "puppet/modules"
-  pp_manifest_file = "debian-wheezy.pp"
+  pp_manifest_file = "ubuntu-trusty.pp"
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
