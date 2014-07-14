@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "fadenb/debian-wheezy-puppet3"
+  config.vm.box = "anuragsoni/trusty64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -131,6 +131,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dev.vm.network "forwarded_port", guest: 10443, host: 10443
     # CouchDB
     dev.vm.network "forwarded_port", guest: 5984, host: 5984
+    # NodeJS
+    dev.vm.network "forwarded_port", guest: 3000, host: 3000
   end
   config.vm.define "production", autostart: false do |production|
     production.vm.hostname = "thmcards-production"
@@ -149,5 +151,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     production.vm.network "forwarded_port", guest: 10444, host: 10444
     # CouchDB
     production.vm.network "forwarded_port", guest: 5984, host: 5985
+    # NodeJS
+    production.vm.network "forwarded_port", guest: 3000, host: 3001
   end
 end
