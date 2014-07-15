@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+echo -e "Stopping THMcards...\c"
+
+OUTPUT_REDIRECT="2>/dev/null 1>&2"
+while getopts v opt
+do
+  case $opt in
+    v)
+      OUTPUT_REDIRECT=""
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+PID_FILE_SERVER="<%= @server_pid %>"
+
+function kill_previous_instances {
+  if [ -e "$1" ]
+  then
+    eval "kill `cat $1` $OUTPUT_REDIRECT"
+    rm "$1"
+  fi
+}
+
+function kill_running_processes {
+  if [ -n "$1" ]
+  then
+    eval "kill $1 $OUTPUT_REDIRECT"
+  fi
+}
+
+kill_previous_instances $PID_FILE_SERVER
+
+echo -e "done!"

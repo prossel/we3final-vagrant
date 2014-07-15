@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+echo -e "Starting THMcards...\c"
+
+OUTPUT_REDIRECT="2>/dev/null 1>&2"
+VERBOSE=""
+while getopts v opt
+do
+  case $opt in
+    v)
+      OUTPUT_REDIRECT=""
+      VERBOSE="-v"
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+CWD=`pwd`
+THMCARDS_SERVER="<%= @server_path %>"
+PID_FILE_SERVER="<%= @server_pid %>"
+
+eval "./stop.sh $VERBOSE $OUTPUT_REDIRECT"
+
+PID_SERVER=0
+
+cd "$THMCARDS_SERVER"
+eval "nodejs app.js $OUTPUT_REDIRECT &"
+PID_SERVER=$!
+
+cd "$CWD"
+
+echo "$PID_SERVER" > "$PID_FILE_SERVER"
+
+THMCARDS_URL="http://localhost:3000/"
+THMCARDS_INTERNAL_URL="$THMCARDS_URL"
+
+RESPONSE_CODE=0
+while [ "$RESPONSE_CODE" -ne 200 -a "$RESPONSE_CODE" -ne 302 ]
+do
+  # courtesy of http://superuser.com/a/442395
+  echo -e ".\c"
+  sleep 1
+  RESPONSE_CODE=`curl -s -o /dev/null -I -w "%{http_code}" -m 5 "$THMCARDS_INTERNAL_URL"`
+done
+
+echo -e "\nTHMcards is now ready @ $THMCARDS_URL"
