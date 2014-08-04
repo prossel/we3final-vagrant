@@ -1,5 +1,5 @@
 include thmcards
-include jenkins
+#include jenkins
 
 # Ensure the repository is updated before any package is installed
 exec { "apt-update":
